@@ -1,0 +1,120 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.successIcon {
+  color: #10b981;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: rgba(250, 250, 250, 0.6);
+  font-size: 1rem;
+}
+
+.previewContainer {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #18181b;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2rem;
+  border: 1px solid rgba(250, 250, 250, 0.1);
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(250, 250, 250, 0.6);
+}
+
+.storyImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.downloadButton, .shareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.downloadButton {
+  background: #27272a;
+  color: #fafafa;
+  border: 1px solid rgba(250, 250, 250, 0.1);
+}
+
+.downloadButton:hover {
+  background: #3f3f46;
+}
+
+.shareButton {
+  background: #a855f7;
+  color: #fafafa;
+  border: none;
+}
+
+.shareButton:hover {
+  background: #9333ea;
+}
+
+.resetButton {
+  background: transparent;
+  color: rgba(250, 250, 250, 0.6);
+  border: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.resetButton:hover {
+  color: #fafafa;
+}
+
+.error {
+  color: #ef4444;
+}

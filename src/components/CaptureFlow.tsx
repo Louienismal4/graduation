@@ -2,9 +2,10 @@
 
 import React, { useState, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Camera, Upload, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Camera, Upload, AlertCircle, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import styles from './CaptureFlow.module.css';
+import StoryCard from './StoryCard';
 
 export default function CaptureFlow() {
   const [file, setFile] = useState<File | null>(null);
@@ -101,20 +102,13 @@ export default function CaptureFlow() {
     setError(null);
   };
 
-  if (success) {
+  if (success && preview) {
     return (
-      <div className={styles.container}>
-        <div className={styles.success}>
-          <CheckCircle className={styles.successIcon} />
-          <h2 className={styles.successTitle}>Moment Sealed!</h2>
-          <p className={styles.successText}>
-            Your memory is now safely stored in the time capsule. It will be revealed on your graduation anniversary.
-          </p>
-          <button onClick={reset} className={styles.resetButton}>
-            Capture Another
-          </button>
-        </div>
-      </div>
+      <StoryCard 
+        imageUrl={preview} 
+        journalEntry={journal} 
+        onReset={reset} 
+      />
     );
   }
 
