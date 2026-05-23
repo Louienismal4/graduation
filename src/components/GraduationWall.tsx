@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isPlaceholder } from '@/lib/supabase';
 import { Loader2, X } from 'lucide-react';
 import Image from 'next/image';
 import styles from './GraduationWall.module.css';
@@ -29,8 +29,16 @@ export default function GraduationWall() {
 
         if (error) throw error;
         setMoments(data || []);
-      } catch (error) {
-        console.error('Error fetching moments:', error);
+      } catch (error: any) {
+        console.error('Error fetching moments:', {
+          message: error?.message || 'Unknown error',
+          details: error?.details || 'None',
+          hint: error?.hint || 'None',
+          fullError: error
+        });
+        if (isPlaceholder) {
+          console.warn('CRITICAL: Using placeholder Supabase credentials. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env.local file.');
+        }
       } finally {
         setLoading(false);
       }

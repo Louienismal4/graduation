@@ -46,8 +46,13 @@ export default function AdminGate() {
 
       if (fetchError) throw fetchError;
       setMoments(data || []);
-    } catch (err) {
-      console.error('Fetch error:', err);
+    } catch (err: any) {
+      console.error('Fetch error:', {
+        message: err?.message || 'Unknown error',
+        details: err?.details || 'None',
+        hint: err?.hint || 'None',
+        fullError: err
+      });
       setError('Failed to fetch pending moments.');
     } finally {
       setLoading(false);
