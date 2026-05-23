@@ -1,0 +1,202 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #a1a1aa;
+  font-size: 1.125rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  color: #a855f7;
+  gap: 1rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 5rem 0;
+  color: #71717a;
+}
+
+.masonry {
+  columns: 1;
+  column-gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .masonry {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry {
+    columns: 3;
+  }
+}
+
+.momentCard {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: #18181b;
+  border: 1px solid #27272a;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.momentCard:hover {
+  transform: translateY(-4px);
+  border-color: #a855f7;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+}
+
+.momentImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.momentContent {
+  padding: 1.25rem;
+}
+
+.journalEntry {
+  font-size: 0.875rem;
+  color: #e4e4e7;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.modalContent {
+  background: #09090b;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  border-radius: 2rem;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #27272a;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .modalContent {
+    flex-direction: row;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.closeButton:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modalImageContainer {
+  flex: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 300px;
+}
+
+.modalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modalInfo {
+  flex: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.modalJournal {
+  font-size: 1rem;
+  color: #d4d4d8;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.modalDate {
+  font-size: 0.875rem;
+  color: #71717a;
+  margin-top: auto;
+}
