@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import styles from "./CinematicIntro.module.css";
 
 const steps = [
   "Four years ago...\nwe walked in as strangers.",
