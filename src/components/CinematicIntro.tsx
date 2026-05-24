@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const steps = [
   "Four years ago...\nwe walked in as strangers.",
@@ -9,73 +9,83 @@ const steps = [
   "But somehow...\nwe kept going.",
   "Every sacrifice.\nEvery late-night review.\nEvery silent prayer.\nLed us here.",
   "These aren’t just pictures.\nThey are proof that we lived this chapter.",
-  "Tonight, we celebrate the present...\n...while sending memories into the future."
+  "Tonight, we celebrate the present...\n...while sending memories into the future.",
 ];
 
 const FINAL_TITLE_STEP = steps.length;
 const FINAL_CTA_STEP = steps.length + 1;
 
-export default function CinematicIntro({ onComplete }: { onComplete: () => void }) {
+export default function CinematicIntro({
+  onComplete,
+}: {
+  onComplete: () => void;
+}) {
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    if (currentStep < FINAL_CTA_STEP) { // Auto advance until the final CTA screen
+    if (currentStep < FINAL_CTA_STEP) {
+      // Auto advance until the final CTA screen
       const timer = setTimeout(() => {
-        setCurrentStep(prev => prev + 1);
-      }, 3500);
+        setCurrentStep((prev) => prev + 1);
+      }, 6500);
       return () => clearTimeout(timer);
     }
   }, [currentStep]);
 
   // Styles based on spec: White background, #1E2D93 text color, Playfair Display font
   const containerStyle: React.CSSProperties = {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: '#FFFFFF',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    color: '#1E2D93',
-    fontFamily: 'var(--font-playfair), serif',
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "#FFFFFF",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    color: "#1E2D93",
+    fontFamily: "var(--font-playfair), serif",
     zIndex: 9999,
-    padding: '2rem',
-    cursor: currentStep < FINAL_CTA_STEP ? 'pointer' : 'default'
+    padding: "2rem",
+    cursor: currentStep < FINAL_CTA_STEP ? "pointer" : "default",
   };
 
   const textStyle: React.CSSProperties = {
-    fontSize: 'clamp(1.25rem, 5vw, 1.75rem)',
-    lineHeight: '1.4',
-    whiteSpace: 'pre-line',
+    fontSize: "clamp(1.5rem, 6vw, 2.5rem)",
+    lineHeight: "1.5",
+    whiteSpace: "pre-line",
+    fontWeight: 700, // Medium weight
   };
 
   const buttonStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#1E2D93',
-    color: '#FFFFFF',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '1.125rem',
+    marginTop: "2rem",
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#1E2D93",
+    color: "#FFFFFF",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "1.125rem",
     fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'opacity 0.2s'
+    cursor: "pointer",
+    transition: "opacity 0.2s",
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key === 'Enter' || e.key === ' ') && currentStep < FINAL_CTA_STEP) {
-      setCurrentStep(prev => prev + 1);
+    if ((e.key === "Enter" || e.key === " ") && currentStep < FINAL_CTA_STEP) {
+      setCurrentStep((prev) => prev + 1);
     }
   };
 
   const renderContent = () => {
     if (currentStep < FINAL_TITLE_STEP) {
       return (
-        <div key={currentStep} className="animate-fade-in-out" style={textStyle}>
+        <div
+          key={currentStep}
+          className="animate-fade-in-out"
+          style={textStyle}
+        >
           {steps[currentStep]}
         </div>
       );
@@ -84,8 +94,20 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
     if (currentStep === FINAL_TITLE_STEP) {
       return (
         <div key="step-title" className="animate-fade-in-out">
-          <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: '1rem' }}>Graduation Time Machine</h1>
-          <p style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', maxWidth: '600px' }}>
+          <h1
+            style={{
+              fontSize: "clamp(2.5rem, 10vw, 4rem)",
+              marginBottom: "1.5rem",
+            }}
+          >
+            Graduation Time Machine
+          </h1>
+          <p
+            style={{
+              fontSize: "clamp(1.1rem, 5vw, 1.5rem)",
+              maxWidth: "800px",
+            }}
+          >
             Lock your memories. Write your story. Meet yourself again someday.
           </p>
         </div>
@@ -93,18 +115,26 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
     }
 
     return (
-      <div key="step-cta" className="animate-fade-in-out">
-        <div style={{ fontStyle: 'italic', fontSize: 'clamp(1.1rem, 4.5vw, 1.5rem)', marginBottom: '2rem', maxWidth: '600px' }}>
-          Because years from now... you’ll want to remember who you were tonight.
+      <div key="step-cta" className="animate-fade-in">
+        <div
+          style={{
+            fontStyle: "italic",
+            fontSize: "clamp(1.1rem, 4.5vw, 1.5rem)",
+            marginBottom: "2rem",
+            maxWidth: "600px",
+          }}
+        >
+          Because years from now... you’ll want to remember who you were
+          tonight.
         </div>
-        <button 
+        <button
           onClick={(e) => {
             e.stopPropagation();
             onComplete();
-          }} 
+          }}
           style={buttonStyle}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
         >
           Enter the Time Machine
         </button>
@@ -113,14 +143,40 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
   };
 
   return (
-    <div 
-      onClick={() => currentStep < FINAL_CTA_STEP && setCurrentStep(prev => prev + 1)} 
+    <div
+      onClick={() =>
+        currentStep < FINAL_CTA_STEP && setCurrentStep((prev) => prev + 1)
+      }
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
       aria-label="Advance story step"
       style={containerStyle}
     >
+      {currentStep < FINAL_CTA_STEP && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onComplete();
+          }}
+          style={{
+            position: "absolute",
+            top: "2rem",
+            right: "2rem",
+            background: "transparent",
+            border: "1px solid #1E2D93",
+            color: "#1E2D93",
+            padding: "0.4rem 0.8rem",
+            borderRadius: "4px",
+            fontSize: "0.875rem",
+            cursor: "pointer",
+            opacity: 0.6,
+            fontFamily: "inherit",
+          }}
+        >
+          Skip
+        </button>
+      )}
       {renderContent()}
     </div>
   );

@@ -46,11 +46,12 @@ export default function AdminGate() {
 
       if (fetchError) throw fetchError;
       setMoments(data || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { message?: string, details?: string, hint?: string };
       console.error('Fetch error:', {
-        message: err?.message || 'Unknown error',
-        details: err?.details || 'None',
-        hint: err?.hint || 'None',
+        message: error?.message || 'Unknown error',
+        details: error?.details || 'None',
+        hint: error?.hint || 'None',
         fullError: err
       });
       setError('Failed to fetch pending moments.');

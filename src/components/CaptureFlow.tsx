@@ -85,14 +85,15 @@ export default function CaptureFlow() {
       }
 
       setSuccess(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { message?: string, details?: string, hint?: string };
       console.error('Upload error:', {
-        message: err?.message || 'Unknown error',
-        details: err?.details || 'None',
-        hint: err?.hint || 'None',
+        message: error?.message || 'Unknown error',
+        details: error?.details || 'None',
+        hint: error?.hint || 'None',
         fullError: err
       });
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred.';
+      const errorMessage = error?.message || 'An unexpected error occurred.';
       setError(errorMessage);
     } finally {
       setLoading(false);

@@ -29,12 +29,13 @@ export default function GraduationWall() {
 
         if (error) throw error;
         setMoments(data || []);
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string, details?: string, hint?: string };
         console.error('Error fetching moments:', {
           message: error?.message || 'Unknown error',
           details: error?.details || 'None',
           hint: error?.hint || 'None',
-          fullError: error
+          fullError: err
         });
         if (isPlaceholder) {
           console.warn('CRITICAL: Using placeholder Supabase credentials. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env.local file.');
