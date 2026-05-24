@@ -95,18 +95,31 @@ export default function CinematicIntro({
       const words = calculateWordDelays(steps[currentStep]);
       return (
         <div key={currentStep} style={textStyle}>
-          {words.map((word, i) => (
-            <React.Fragment key={i}>
-              {word.isNewLine && <div className={styles.newLine} />}
-              <span
-                className={styles.word}
-                style={{ animationDelay: `${word.delay}s` }}
-              >
-                {word.text}
-              </span>
-              {" "}
-            </React.Fragment>
-          ))}
+          {words.map((word, i) => {
+            const randomDuration = 4 + (i % 3);
+            const randomDelay = -(i % 5);
+
+            return (
+              <React.Fragment key={i}>
+                {word.isNewLine && <div className={styles.newLine} />}
+                <span
+                  className={styles.word}
+                  style={{ animationDelay: `${word.delay}s` }}
+                >
+                  <span
+                    className={styles.drifter}
+                    style={{
+                      animationDuration: `${randomDuration}s`,
+                      animationDelay: `${randomDelay}s`,
+                    }}
+                  >
+                    {word.text}
+                  </span>
+                </span>
+                {" "}
+              </React.Fragment>
+            );
+          })}
         </div>
       );
     }
