@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./CinematicIntro.module.css";
+import { calculateWordDelays } from "@/lib/animationUtils";
 
 const steps = [
   "Four years ago...\nwe walked in as strangers.",
@@ -81,13 +82,21 @@ export default function CinematicIntro({
 
   const renderContent = () => {
     if (currentStep < FINAL_TITLE_STEP) {
+      const words = calculateWordDelays(steps[currentStep]);
       return (
-        <div
-          key={currentStep}
-          className="animate-fade-in-out"
-          style={textStyle}
-        >
-          {steps[currentStep]}
+        <div key={currentStep} style={textStyle}>
+          {words.map((word, i) => (
+            <React.Fragment key={i}>
+              {word.isNewLine && <div className={styles.newLine} />}
+              <span
+                className={styles.word}
+                style={{ animationDelay: `${word.delay}s` }}
+              >
+                {word.text}
+              </span>
+              {" "}
+            </React.Fragment>
+          ))}
         </div>
       );
     }
