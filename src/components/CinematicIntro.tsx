@@ -8,23 +8,22 @@ const steps = [
   "We survived deadlines, breakdowns, sleepless nights,\nand moments nobody else saw.",
   "But somehow...\nwe kept going.",
   "Every sacrifice.\nEvery late-night review.\nEvery silent prayer.\nLed us here.",
-  "These aren’t just pictures.",
-  "They are proof\nthat we lived this chapter.",
+  "These aren’t just pictures.\nThey are proof that we lived this chapter.",
   "Tonight, we celebrate the present...\n...while sending memories into the future."
 ];
 
+const FINAL_TITLE_STEP = steps.length;
+const FINAL_CTA_STEP = steps.length + 1;
+
 export default function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isFinal, setIsFinal] = useState(false);
 
   useEffect(() => {
-    if (currentStep < steps.length) {
+    if (currentStep < FINAL_CTA_STEP) { // Auto advance until the final CTA screen
       const timer = setTimeout(() => {
         setCurrentStep(prev => prev + 1);
       }, 3500);
       return () => clearTimeout(timer);
-    } else {
-      setIsFinal(true);
     }
   }, [currentStep]);
 
@@ -45,11 +44,11 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
     fontFamily: 'var(--font-playfair), serif',
     zIndex: 9999,
     padding: '2rem',
-    cursor: 'pointer'
+    cursor: currentStep < FINAL_CTA_STEP ? 'pointer' : 'default'
   };
 
   const textStyle: React.CSSProperties = {
-    fontSize: '1.75rem',
+    fontSize: 'clamp(1.25rem, 5vw, 1.75rem)',
     lineHeight: '1.4',
     whiteSpace: 'pre-line',
   };
@@ -67,28 +66,62 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
     transition: 'opacity 0.2s'
   };
 
-  if (isFinal) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ') && currentStep < FINAL_CTA_STEP) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const renderContent = () => {
+    if (currentStep < FINAL_TITLE_STEP) {
+      return (
+        <div key={currentStep} className="animate-fade-in-out" style={textStyle}>
+          {steps[currentStep]}
+        </div>
+      );
+    }
+
+    if (currentStep === FINAL_TITLE_STEP) {
+      return (
+        <div key="step-title" className="animate-fade-in-out">
+          <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: '1rem' }}>Graduation Time Machine</h1>
+          <p style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', maxWidth: '600px' }}>
+            Lock your memories. Write your story. Meet yourself again someday.
+          </p>
+        </div>
+      );
+    }
+
     return (
-      <div style={containerStyle}>
-         <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Graduation Time Machine</h1>
-         <p style={{ fontSize: '1.25rem', marginBottom: '2rem', maxWidth: '600px' }}>
-           Lock your memories. Write your story. Meet yourself again someday.
-         </p>
-         <div style={{ fontStyle: 'italic', marginBottom: '2rem', maxWidth: '600px' }}>
-           Because years from now... you’ll want to remember who you were tonight.
-         </div>
-         <button onClick={onComplete} style={buttonStyle}>
-           Enter the Time Machine
-         </button>
+      <div key="step-cta" className="animate-fade-in-out">
+        <div style={{ fontStyle: 'italic', fontSize: 'clamp(1.1rem, 4.5vw, 1.5rem)', marginBottom: '2rem', maxWidth: '600px' }}>
+          Because years from now... you’ll want to remember who you were tonight.
+        </div>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onComplete();
+          }} 
+          style={buttonStyle}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+        >
+          Enter the Time Machine
+        </button>
       </div>
     );
-  }
+  };
 
   return (
-    <div onClick={() => setCurrentStep(prev => prev + 1)} style={containerStyle}>
-      <div key={currentStep} className="animate-fade-in-out" style={textStyle}>
-        {steps[currentStep]}
-      </div>
+    <div 
+      onClick={() => currentStep < FINAL_CTA_STEP && setCurrentStep(prev => prev + 1)} 
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label="Advance story step"
+      style={containerStyle}
+    >
+      {renderContent()}
     </div>
   );
 }
