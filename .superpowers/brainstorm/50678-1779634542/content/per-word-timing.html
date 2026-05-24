@@ -1,0 +1,58 @@
+<h2>How should the words "breathe"?</h2>
+<p class="subtitle">Since we're doing a per-word blur, the pacing determines the emotional impact.</p>
+
+<div class="options">
+  <div class="option" data-choice="steady" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Steady Pulse</h3>
+      <p>Every word follows a constant beat (e.g., every 0.3s). Very consistent and rhythmic.</p>
+      <div class="mockup-body" style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #1E2D93; line-height: 1.8;">
+        <span style="animation: blurIn 0.8s ease forwards;">Four</span> 
+        <span style="animation: blurIn 0.8s ease forwards 0.3s; opacity: 0;">years</span> 
+        <span style="animation: blurIn 0.8s ease forwards 0.6s; opacity: 0;">ago...</span> 
+        <span style="animation: blurIn 0.8s ease forwards 0.9s; opacity: 0;">we</span> 
+        <span style="animation: blurIn 0.8s ease forwards 1.2s; opacity: 0;">walked</span> 
+        <span style="animation: blurIn 0.8s ease forwards 1.5s; opacity: 0;">in...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="expressive" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Expressive (Punctuation-Aware)</h3>
+      <p>Short pauses between words, but a longer "breath" at commas, ellipses (...), and line breaks. Feels more like a spoken story.</p>
+      <div class="mockup-body" style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #1E2D93; line-height: 1.8;">
+        <span style="animation: blurIn 0.8s ease forwards;">Four</span> 
+        <span style="animation: blurIn 0.8s ease forwards 0.3s; opacity: 0;">years</span> 
+        <span style="animation: blurIn 0.8s ease forwards 0.6s; opacity: 0;">ago...</span> 
+        <span style="display:inline-block; width: 20px;"></span>
+        <span style="animation: blurIn 0.8s ease forwards 1.5s; opacity: 0;">we</span> 
+        <span style="animation: blurIn 0.8s ease forwards 1.8s; opacity: 0;">walked</span> 
+        <span style="animation: blurIn 0.8s ease forwards 2.1s; opacity: 0;">in...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="phrasal" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Phrasal Reveal</h3>
+      <p>Reveals small groups of 2-3 words at a time. Less "busy" than per-word, emphasizing key thoughts.</p>
+      <div class="mockup-body" style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #1E2D93; line-height: 1.8;">
+        <span style="animation: blurIn 0.8s ease forwards;">Four years ago...</span> 
+        <span style="display:inline-block; width: 10px;"></span>
+        <span style="animation: blurIn 0.8s ease forwards 1s; opacity: 0;">we walked in</span> 
+        <span style="animation: blurIn 0.8s ease forwards 2s; opacity: 0;">as strangers.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes blurIn {
+    0% { opacity: 0; filter: blur(8px); transform: scale(0.95); }
+    100% { opacity: 1; filter: blur(0); transform: scale(1); }
+  }
+</style>

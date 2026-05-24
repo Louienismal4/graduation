@@ -1,0 +1,50 @@
+<h2>Which per-word transition style fits the vibe?</h2>
+<p class="subtitle">Choose a style that matches the emotional weight of the graduation story.</p>
+
+<div class="options">
+  <div class="option" data-choice="classic" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Classic Reveal (Fade & Blur)</h3>
+      <p>Words emerge from a soft blur and fade in. It feels like a memory coming into focus—elegant and cinematic.</p>
+      <div class="placeholder" style="height: 60px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #1E2D93;">
+        <span style="opacity: 0.3; filter: blur(2px);">Four</span>&nbsp;
+        <span style="opacity: 0.6; filter: blur(1px);">years</span>&nbsp;
+        <span style="opacity: 1; filter: blur(0px);">ago...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="typewriter" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Rhythmic Typewriter</h3>
+      <p>Words appear one by one with a steady pulse. It feels like a story being written in real-time, building anticipation.</p>
+      <div class="placeholder" style="height: 60px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 1.5rem; color: #1E2D93;">
+        <span>Four</span>&nbsp;
+        <span>years</span>&nbsp;
+        <span style="border-right: 2px solid #1E2D93; animation: blink 1s infinite;">ago</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="dynamic" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Slide & Scale</h3>
+      <p>Words slide up slightly and scale into place. It's modern and dynamic, giving each word a sense of arrival.</p>
+      <div class="placeholder" style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #1E2D93;">
+        <span style="transform: translateY(0); scale: 1;">Four</span>&nbsp;
+        <span style="transform: translateY(2px); scale: 1.05;">years</span>&nbsp;
+        <span style="transform: translateY(10px); opacity: 0; filter: blur(2px);">ago...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+</style>
