@@ -31,8 +31,8 @@ export default function CinematicIntro({
       if (currentStep < FINAL_TITLE_STEP) {
         const words = calculateWordDelays(steps[currentStep]);
         const lastWordDelay = words[words.length - 1]?.delay || 0;
-        // Animation (0.8s) + Reading Time (2.5s)
-        duration = (lastWordDelay + 0.8 + 2.5) * 1000;
+        // Animation (1.8s) + Reading Time (2.5s)
+        duration = (lastWordDelay + 1.8 + 2.5) * 1000;
       } else if (currentStep === FINAL_TITLE_STEP) {
         duration = 8000;
       }
