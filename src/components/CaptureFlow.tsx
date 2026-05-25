@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Camera, Upload, AlertCircle, Loader2, RefreshCw, Trash2 } from 'lucide-react';
+import { Camera, Upload, AlertCircle, Loader2, RefreshCw, Trash2, Zap, ZapOff, ZoomIn, ZoomOut } from 'lucide-react';
 import Image from 'next/image';
 import styles from './CaptureFlow.module.css';
 import StoryCard from './StoryCard';
@@ -20,26 +20,18 @@ export default function CaptureFlow() {
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [isFlashing, setIsFlashing] = useState(false);
   const [retakeCount, setRetakeCount] = useState(0);
+
+  // Advanced camera controls states
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [capabilities, setCapabilities] = useState<any>(null);
+  const [torchOn, setTorchOn] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [focusPoint, setFocusPoint] = useState<{ x: number, y: number } | null>(null);
   
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-
-  // Callback ref to bind stream instantly when the video element mounts or remounts
-  const setVideoRef = React.useCallback((node: HTMLVideoElement | null) => {
-    videoRef.current = node;
-    if (node && streamRef.current) {
-      console.log('Callback ref binding stream successfully to video node');
-      node.muted = true;
-      // Only set if different to avoid stream interruption
-      if (node.srcObject !== streamRef.current) {
-        node.srcObject = streamRef.current;
-      }
-      // Play is handled by onLoadedMetadata, but we can try here as well
-      node.play().catch(e => console.warn('Callback video play failed:', e));
-    }
-  }, []);
 
   // Initialize camera stream reactively based on facingMode & retakeCount
   useEffect(() => {
@@ -68,21 +60,35 @@ export default function CaptureFlow() {
         streamRef.current = mediaStream;
         
         // Log video tracks for systematic debugging
-        const videoTracks = mediaStream.getVideoTracks();
-        console.log('Camera initialized successfully. Active video tracks:', videoTracks.map(t => ({
-          label: t.label,
-          enabled: t.enabled,
-          readyState: t.readyState
-        })));
-
-        if (videoRef.current) {
-          console.log('Ref binding stream successfully to video element');
-          videoRef.current.muted = true;
-          if (videoRef.current.srcObject !== mediaStream) {
-            videoRef.current.srcObject = mediaStream;
+        const track = mediaStream.getVideoTracks()[0];
+        if (track) {
+          console.log('Camera active track:', track.label);
+          
+          // Detect advanced capabilities
+          if (typeof track.getCapabilities === 'function') {
+            const caps = track.getCapabilities();
+            console.log('Camera capabilities:', caps);
+            setCapabilities(caps);
+            
+            // Sync initial zoom if available
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((caps as any).zoom) {
+               const settings = track.getSettings();
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
+               setZoomLevel((settings as any).zoom || (caps as any).zoom.min || 1);
+            }
+            
+            // Sync initial torch if available
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((caps as any).torch) {
+               const settings = track.getSettings();
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
+               setTorchOn(!!(settings as any).torch);
+            }
           }
-          videoRef.current.play().catch(e => console.warn('Video play failed:', e));
         }
+
+        // Stream is ready, state update will trigger the useLayoutEffect to bind it
         setCameraState('streaming');
         setError(null);
       } catch (err) {
@@ -106,9 +112,8 @@ export default function CaptureFlow() {
       }
     };
 
-    if (cameraState === 'idle') {
-      initCamera();
-    }
+    // We initialize the camera whenever facingMode or retakeCount changes
+    initCamera();
 
     return () => {
       active = false;
@@ -117,12 +122,111 @@ export default function CaptureFlow() {
         streamRef.current = null;
       }
     };
-  }, [facingMode, retakeCount, cameraState]);
+  }, [facingMode, retakeCount]); // Removed cameraState to prevent immediate cleanup
+
+  // Bind the stream to the video element whenever the state changes to streaming
+  useEffect(() => {
+    if (cameraState === 'streaming' && videoRef.current && streamRef.current) {
+      const video = videoRef.current;
+      video.muted = true;
+      
+      if (video.srcObject !== streamRef.current) {
+        video.srcObject = streamRef.current;
+      }
+      
+      // Some browsers need explicit play even with autoPlay
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.warn("Video play error during binding:", error);
+          // Retry playing after a short delay for Safari
+          setTimeout(() => {
+            if (videoRef.current && cameraState === 'streaming') {
+              videoRef.current.play().catch(e => console.error("Retry play failed:", e));
+            }
+          }, 500);
+        });
+      }
+    }
+  }, [cameraState]);
 
   // Flip camera
   const toggleFacingMode = () => {
     setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
     setCameraState('idle');
+  };
+
+  // Flash toggle (hardware torch)
+  const toggleTorch = async () => {
+    if (!streamRef.current) return;
+    const track = streamRef.current.getVideoTracks()[0];
+    if (track && capabilities?.torch) {
+      try {
+        const newTorch = !torchOn;
+        await track.applyConstraints({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          advanced: [{ torch: newTorch } as any]
+        });
+        setTorchOn(newTorch);
+      } catch (e) {
+        console.warn('Failed to toggle torch', e);
+      }
+    }
+  };
+
+  // Zoom control
+  const handleZoom = async (targetZoom: number) => {
+    if (!streamRef.current || !capabilities?.zoom) return;
+    const track = streamRef.current.getVideoTracks()[0];
+    const min = capabilities.zoom.min || 1;
+    const max = capabilities.zoom.max || 3;
+    
+    const newZoom = Math.max(min, Math.min(targetZoom, max));
+
+    try {
+      await track.applyConstraints({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        advanced: [{ zoom: newZoom } as any]
+      });
+      setZoomLevel(newZoom);
+    } catch (e) {
+      console.warn('Failed to apply zoom', e);
+    }
+  };
+
+  // Tap to focus
+  const handleTapToFocus = async (e: React.MouseEvent<HTMLDivElement>) => {
+    if (cameraState !== 'streaming') return;
+    
+    // Always show visual focus ring for UX
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    setFocusPoint({ x, y });
+    setTimeout(() => setFocusPoint(null), 1500); // Hide ring after 1.5s
+
+    if (!streamRef.current) return;
+    const track = streamRef.current.getVideoTracks()[0];
+    
+    // Check if device supports programmatic focus
+    if (track && capabilities?.focusMode) {
+      try {
+        // Calculate relative coordinates 0.0 to 1.0 for constraints
+        const relX = x / rect.width;
+        const relY = y / rect.height;
+
+        await track.applyConstraints({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          advanced: [{
+            focusMode: 'single-shot',
+            pointsOfInterest: [{ x: relX, y: relY }]
+          } as any]
+        });
+      } catch (err) {
+        console.warn('Failed to set focus point', err);
+      }
+    }
   };
 
   // Snaps photo from the <video> stream to a <canvas>
@@ -297,7 +401,7 @@ export default function CaptureFlow() {
         <div className={`${styles.sticker} ${styles.stickerStar}`} aria-hidden="true">🌟</div>
         <div className={`${styles.sticker} ${styles.stickerHeart}`} aria-hidden="true">💖</div>
 
-        <div className={styles.instaxPhotoArea}>
+        <div className={styles.instaxPhotoArea} onClick={handleTapToFocus}>
           {cameraState === 'idle' && (
             <div className={styles.cameraPlaceholder}>
               <Loader2 className={`${styles.loaderIcon} animate-spin`} />
@@ -307,9 +411,10 @@ export default function CaptureFlow() {
 
           {/* Render video tag unconditionally to guarantee React preserves the DOM element across state transitions */}
           <video 
-            ref={setVideoRef} 
+            ref={videoRef} 
             autoPlay 
-            playsInline 
+            playsInline
+            webkit-playsinline="true"
             muted 
             onLoadedMetadata={(e) => {
               const video = e.target as HTMLVideoElement;
@@ -318,19 +423,71 @@ export default function CaptureFlow() {
             className={styles.cameraVideo} 
             style={{ 
               opacity: cameraState === 'streaming' ? 1 : 0,
-              pointerEvents: cameraState === 'streaming' ? 'auto' : 'none'
+              pointerEvents: cameraState === 'streaming' ? 'auto' : 'none',
+              visibility: cameraState === 'streaming' ? 'visible' : 'hidden'
             }}
           />
 
           {cameraState === 'streaming' && (
-            <button 
-              type="button" 
-              onClick={toggleFacingMode} 
-              className={styles.flipButton}
-              title="Flip Camera"
-            >
-              <RefreshCw size={18} />
-            </button>
+            <>
+              {/* Focus Ring Indicator */}
+              {focusPoint && (
+                <div 
+                  className={styles.focusRing} 
+                  style={{ left: focusPoint.x, top: focusPoint.y }}
+                />
+              )}
+              
+              {/* Camera Action Overlays (Flash & Zoom) */}
+              <div className={styles.cameraControlsOverlay}>
+                {capabilities?.torch && (
+                  <button 
+                    type="button" 
+                    onClick={(e) => { e.stopPropagation(); toggleTorch(); }} 
+                    className={`${styles.controlButton} ${torchOn ? styles.controlButtonActive : ''}`}
+                    title="Toggle Flash"
+                  >
+                    {torchOn ? <Zap size={16} /> : <ZapOff size={16} />}
+                  </button>
+                )}
+              </div>
+
+              {/* Native-style iPhone zoom pill at the bottom center */}
+              {capabilities?.zoom && (
+                <div className={styles.zoomRow}>
+                  <button 
+                    type="button" 
+                    onClick={(e) => { e.stopPropagation(); handleZoom(0.5); }} 
+                    className={`${styles.zoomTextButton} ${zoomLevel < 1 ? styles.zoomTextButtonActive : ''}`}
+                  >
+                    .5
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={(e) => { e.stopPropagation(); handleZoom(1); }} 
+                    className={`${styles.zoomTextButton} ${zoomLevel >= 1 && zoomLevel < 3 ? styles.zoomTextButtonActive : ''}`}
+                  >
+                    1x
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={(e) => { e.stopPropagation(); handleZoom(3); }} 
+                    className={`${styles.zoomTextButton} ${zoomLevel >= 3 ? styles.zoomTextButtonActive : ''}`}
+                  >
+                    3
+                  </button>
+                </div>
+              )}
+
+              <button 
+                type="button" 
+                onClick={(e) => { e.stopPropagation(); toggleFacingMode(); }} 
+                className={styles.flipButton}
+                title="Flip Camera"
+              >
+                <RefreshCw size={18} />
+              </button>
+            </>
           )}
 
           {cameraState === 'captured' && preview && (

@@ -512,3 +512,118 @@
 .fallbackUploadLink:hover {
   color: #ff5964;
 }
+
+/* Advanced Camera Controls */
+.cameraControlsOverlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 5;
+}
+
+.zoomRow {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background: rgba(24, 24, 27, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 6px;
+  border-radius: 9999px;
+  z-index: 5;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.zoomTextButton {
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.zoomTextButtonActive {
+  background: #ff5964; /* Coral red from our theme */
+  color: #ffffff;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+.controlButton {
+  background: #ffffff;
+  border: 2px solid #18181b;
+  color: #18181b;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #18181b;
+  transition: all 0.15s ease;
+}
+
+.controlButton:hover:not(:disabled) {
+  background: #f4f4f5;
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0px #18181b;
+}
+
+.controlButton:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #18181b;
+}
+
+.controlButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: 1px 1px 0px #18181b;
+  transform: none;
+}
+
+.controlButtonActive {
+  background: #ffeb3b; /* bright yellow for flash on */
+}
+
+/* Tap to Focus Ring */
+.focusRing {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  border: 2px solid rgba(255, 235, 59, 0.9);
+  background: rgba(255, 235, 59, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  animation: focusPulse 0.4s ease-out forwards;
+}
+
+@keyframes focusPulse {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
