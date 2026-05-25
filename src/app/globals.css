@@ -38,6 +38,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body.light-theme {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #18181b !important;
+}
+
+body.neo-brutalist-theme {
+  background-color: #fbf9f6 !important;
+  background-image: none !important;
+  color: #18181b !important;
 }
 
 main {

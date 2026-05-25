@@ -26,6 +26,20 @@ export default function Home() {
     checkIntroStatus();
   }, []);
 
+  useEffect(() => {
+    if (mode === 'capture' && !showIntro) {
+      document.body.classList.add('light-theme');
+      document.body.classList.add('neo-brutalist-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+      document.body.classList.remove('neo-brutalist-theme');
+    }
+    return () => {
+      document.body.classList.remove('light-theme');
+      document.body.classList.remove('neo-brutalist-theme');
+    };
+  }, [mode, showIntro]);
+
   const handleIntroComplete = () => {
     try {
       localStorage.setItem('grad_intro_seen', 'true');

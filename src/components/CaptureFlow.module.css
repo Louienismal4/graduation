@@ -1,196 +1,514 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+
 .container {
   width: 100%;
-  max-width: 450px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 1.5rem 1rem 3rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  align-items: center;
+  gap: 1.5rem;
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .header {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 800;
-  letter-spacing: -0.025em;
-  background: linear-gradient(to right, #a855f7, #ec4899);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  letter-spacing: -0.04em;
+  font-family: var(--font-playfair), serif;
+  color: #1e2d93;
 }
 
 .subtitle {
-  color: #a1a1aa;
-  font-size: 1rem;
+  color: #71717a;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.dropzone {
+/* Neo-Brutalist Instax Mini Card Design */
+.instaxFrame {
+  background: #f1ecfc; /* Lilac pastel background */
+  padding: 18px 18px 26px 18px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 370px;
+  border: 3px solid #18181b;
+  box-shadow: 8px 8px 0px #18181b;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform: rotate(-1.5deg);
+}
+
+.instaxFrame:hover {
+  transform: translateY(-4px) rotate(-0.5deg);
+  box-shadow: 12px 12px 0px #18181b;
+}
+
+/* Die-cut emoji stickers with thick white outlines and solid shadows */
+.sticker {
+  position: absolute;
+  font-size: 2.5rem;
+  z-index: 10;
+  user-select: none;
+  cursor: pointer;
+  filter: 
+    drop-shadow(2px 0 0 #ffffff) 
+    drop-shadow(-2px 0 0 #ffffff) 
+    drop-shadow(0 2px 0 #ffffff) 
+    drop-shadow(0 -2px 0 #ffffff)
+    drop-shadow(3px 3px 0px #18181b);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sticker:hover {
+  transform: scale(1.25) rotate(12deg) !important;
+}
+
+.stickerGrad {
+  top: -18px;
+  left: -18px;
+  transform: rotate(-12deg);
+}
+
+.stickerSparkle {
+  top: -14px;
+  right: -14px;
+  transform: rotate(15deg);
+}
+
+.stickerStar {
+  bottom: 125px;
+  left: -16px;
+  transform: rotate(-8deg);
+}
+
+.stickerHeart {
+  bottom: 115px;
+  right: -16px;
+  transform: rotate(20deg);
+}
+
+/* Perfect Square Photo Frame within Instax */
+.instaxPhotoArea {
+  position: relative;
+  width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 2rem;
-  border: 2px dashed #3f3f46;
+  background: #18181b;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 3px solid #18181b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cameraVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.capturedPreviewImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: photoDevelop 1.5s ease-out forwards;
+}
+
+/* Translucent overlay flip button inside video viewport */
+.flipButton {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: #ffffff;
+  border: 2px solid #18181b;
+  color: #18181b;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 2px 2px 0px #18181b;
+  transition: all 0.15s ease;
+}
+
+.flipButton:hover {
+  background: #f4f4f5;
+  transform: rotate(180deg) translateY(-2px);
+  box-shadow: 3px 3px 0px #18181b;
+}
+
+.flipButton:active {
+  transform: rotate(180deg) translate(2px, 2px);
+  box-shadow: 0px 0px 0px #18181b;
+}
+
+/* Flash screen overlay animation */
+.flashOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  z-index: 10;
+  animation: flashEffect 0.2s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Instax paper bottom margin signature area */
+.instaxFooter {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  background: rgba(24, 24, 27, 0.5);
+  gap: 8px;
+  padding-top: 4px;
 }
 
-.dropzone:hover {
-  border-color: rgba(168, 85, 247, 0.5);
-  background: rgba(24, 24, 27, 0.8);
-}
-
-.dropzoneWithImage {
+.handwrittenInput {
+  font-family: 'Caveat', cursive;
+  font-size: 1.75rem;
+  font-weight: 700;
   border: none;
+  background: transparent;
+  outline: none;
+  text-align: center;
+  color: #1a1523; /* Sharpie signature soft ink black */
+  width: 100%;
+  padding: 4px 8px;
+  min-height: 48px;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.1;
+  border-bottom: 2px dashed rgba(24, 24, 27, 0.15);
 }
 
-.previewImage {
-  object-fit: cover;
+.handwrittenInput::placeholder {
+  color: #71717a;
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.instaxDate {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #71717a;
+  font-family: var(--font-geist-sans), sans-serif;
+  margin-top: -2px;
+}
+
+/* Fallback area */
+.uploadFallbackArea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  background: #fafafa;
+  color: #71717a;
+  transition: background 0.2s;
+}
+
+.uploadFallbackArea:hover {
+  background: #f4f4f5;
+  color: #18181b;
 }
 
 .uploadIcon {
-  width: 3rem;
-  height: 3rem;
-  color: #71717a;
-  margin-bottom: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  opacity: 0.8;
+  color: #18181b;
 }
 
 .uploadText {
-  font-size: 0.875rem;
-  color: #71717a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  max-width: 200px;
+  color: #18181b;
 }
 
-.field {
+.cameraPlaceholder {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-}
-
-.label {
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #a1a1aa;
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #d4d4d8;
 }
 
-.textarea {
+.loaderIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Controls Container */
+.actionsContainer {
   width: 100%;
-  min-height: 120px;
-  background: #18181b;
-  border: 1px solid #27272a;
-  border-radius: 1rem;
-  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.shutterRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Bouncy Shutter Button with flat solid shadow */
+.shutterButton {
+  width: 76px;
+  height: 76px;
+  border-radius: 9999px;
+  border: 3px solid #18181b;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 4px 4px 0px #18181b;
+  transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.shutterButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px #18181b;
+}
+
+.shutterButton:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #18181b;
+}
+
+.shutterInner {
+  width: 54px;
+  height: 54px;
+  border-radius: 9999px;
+  background: #ff5964; /* Neo-Brutalist high-visibility coral-red */
+  border: 2px solid #18181b;
+  transition: background 0.2s ease;
+}
+
+.shutterButton:hover .shutterInner {
+  background: #ff2a3b;
+}
+
+/* Captured actions group buttons in Neo-Brutalist fashion */
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: 370px;
+}
+
+.retakeButton {
+  flex: 1;
+  height: 3.25rem;
+  background: #ffffff;
+  border: 3px solid #18181b;
+  color: #18181b;
+  border-radius: 12px;
+  font-weight: 800;
   font-size: 0.875rem;
-  color: #ffffff;
-  outline: none;
-  transition: all 0.2s ease;
-  resize: vertical;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #18181b;
+  transition: all 0.1s ease;
 }
 
-.textarea:focus {
-  border-color: #a855f7;
-  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+.retakeButton:hover:not(:disabled) {
+  background: #f4f4f5;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px #18181b;
 }
 
-.textarea::placeholder {
-  color: #52525b;
+.retakeButton:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #18181b;
+}
+
+.submitButton {
+  flex: 2;
+  height: 3.25rem;
+  background: #a8e6cf; /* Bouncy flat mint green */
+  border: 3px solid #18181b;
+  color: #18181b;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #18181b;
+  transition: all 0.1s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #8ee0c1;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px #18181b;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #18181b;
+}
+
+.submitButton:disabled, .retakeButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 2px 2px 0px #18181b !important;
 }
 
 .error {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #f87171;
-  font-size: 0.875rem;
-  background: rgba(248, 113, 113, 0.1);
-  padding: 1rem;
-  border-radius: 0.75rem;
-}
-
-.button {
+  gap: 8px;
+  color: #18181b;
+  font-size: 0.825rem;
+  font-weight: 700;
+  background: #fee2e2;
+  border: 3px solid #18181b;
+  box-shadow: 4px 4px 0px #18181b;
+  padding: 10px 14px;
+  border-radius: 10px;
   width: 100%;
-  height: 3.5rem;
-  background: linear-gradient(to right, #9333ea, #db2777);
-  border: none;
-  border-radius: 1rem;
-  color: white;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  max-width: 370px;
+  animation: shake 0.4s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flashEffect {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Simulated photographic film development effect */
+@keyframes photoDevelop {
+  0% {
+    filter: sepia(0.8) blur(3px) contrast(0.6) brightness(1.3);
+  }
+  40% {
+    filter: sepia(0.4) blur(1px) contrast(0.8) brightness(1.1);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.retryButton {
+  margin-top: 8px;
+  background: #ff5964; /* Neo-Brutalist flat coral red */
+  color: #18181b;
+  border: 2px solid #18181b;
+  box-shadow: 2px 2px 0px #18181b;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.2);
+  transition: all 0.1s ease;
 }
 
-.button:hover:not(:disabled) {
-  opacity: 0.9;
+.retryButton:hover {
   transform: translateY(-1px);
+  box-shadow: 3px 3px 0px #18181b;
 }
 
-.button:active:not(:disabled) {
-  transform: translateY(0);
+.retryButton:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #18181b;
 }
 
-.button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-.success {
+.lockedArea {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1.5rem;
+  gap: 8px;
   text-align: center;
-  padding: 2rem;
-  gap: 1.5rem;
-  animation: fadeIn 0.5s ease-out;
+  width: 100%;
+  height: 100%;
 }
 
-.successIcon {
-  width: 4rem;
-  height: 4rem;
-  color: #22c55e;
+.lockedTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #18181b;
+  margin-top: 4px;
 }
 
-.successTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
+.lockedText {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #71717a;
+  max-width: 220px;
+  line-height: 1.35;
 }
 
-.successText {
-  color: #a1a1aa;
-}
-
-.resetButton {
-  background: #27272a;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 500;
+.fallbackUploadLink {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #1e2d93;
+  text-decoration: underline;
+  margin-top: 10px;
   cursor: pointer;
-  transition: background 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.15s ease;
 }
 
-.resetButton:hover {
-  background: #3f3f46;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.fallbackUploadLink:hover {
+  color: #ff5964;
 }

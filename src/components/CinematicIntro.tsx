@@ -11,7 +11,7 @@ const steps = [
   "But somehow...\nwe kept going.",
   "Every sacrifice.\nEvery late-night review.\nEvery silent prayer.\nLed us here.",
   "These aren’t just pictures.\nThey are proof that we lived this chapter.",
-  "Tonight, we celebrate the present...\n...while sending memories into the future.",
+  "Tonight, we celebrate the present...\nwhile sending memories into the future.",
 ];
 
 const FINAL_TITLE_STEP = steps.length;
@@ -176,7 +176,7 @@ export default function CinematicIntro({
               marginBottom: "1.5rem",
             }}
           >
-            Graduation Time Machine
+            Congratulations!
           </h1>
           <p
             style={{
@@ -198,6 +198,7 @@ export default function CinematicIntro({
             fontSize: "clamp(1.1rem, 4.5vw, 1.5rem)",
             marginBottom: "2rem",
             maxWidth: "600px",
+            fontWeight: 600,
           }}
         >
           Because years from now... you’ll want to remember who you were
@@ -212,7 +213,7 @@ export default function CinematicIntro({
           onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
         >
-          Enter the Time Machine
+          Save your memories...
         </button>
       </div>
     );

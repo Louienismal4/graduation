@@ -191,3 +191,26 @@ a.secondary {
 .iconButton:active, .pillButton:active {
   transform: translateY(0);
 }
+
+:global(body.light-theme) .iconButton {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid #e4e4e7 !important;
+  color: #1e2d93 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+:global(body.light-theme) .pillButton {
+  background: #1e2d93 !important;
+  border: 1px solid #1e2d93 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(30, 45, 147, 0.25) !important;
+}
+
+:global(body.light-theme) .iconButton:hover {
+  background: #f4f4f5 !important;
+}
+
+:global(body.light-theme) .pillButton:hover {
+  opacity: 0.95 !important;
+  background: #1b2882 !important;
+}
