@@ -14,7 +14,7 @@
 - Create: `src/lib/supabase.ts`
 - Modify: `package.json`
 
-- [ ] **Step 1: Define the Database Schema**
+- [x] **Step 1: Define the Database Schema**
 ```sql
 -- Create moments table
 CREATE TABLE moments (
@@ -47,16 +47,16 @@ BEFORE INSERT ON moments
 FOR EACH ROW EXECUTE FUNCTION check_moment_limit();
 ```
 
-- [ ] **Step 2: Install Dependencies**
+- [x] **Step 2: Install Dependencies**
 Run: `npm install @supabase/auth-helpers-nextjs @supabase/supabase-js lucide-react`
 
-- [ ] **Step 3: Initialize Supabase Client**
+- [x] **Step 3: Initialize Supabase Client**
 ```typescript
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 export const supabase = createClientComponentClient();
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 ```bash
 git add .
 git commit -m "chore: initial setup and database schema"
@@ -69,10 +69,10 @@ git commit -m "chore: initial setup and database schema"
 - Create: `src/components/CaptureFlow.tsx`
 - Create: `src/app/page.tsx`
 
-- [ ] **Step 1: Implement Image Selection & Preview**
-- [ ] **Step 2: Upload to Supabase Storage**
-- [ ] **Step 3: Save metadata to `moments` table**
-- [ ] **Step 4: Commit**
+- [x] **Step 1: Implement Image Selection & Preview**
+- [x] **Step 2: Upload to Supabase Storage**
+- [x] **Step 3: Save metadata to `moments` table**
+- [x] **Step 4: Commit**
 ```bash
 git add .
 git commit -m "feat: add image capture and upload flow"
@@ -85,7 +85,7 @@ git commit -m "feat: add image capture and upload flow"
 - Create: `src/components/StoryCard.tsx`
 - Create: `src/lib/imageUtils.ts`
 
-- [ ] **Step 1: Write Canvas rendering logic**
+- [x] **Step 1: Write Canvas rendering logic**
 ```typescript
 export const generateStoryCard = async (imageUrl: string, text: string) => {
   const canvas = document.createElement('canvas');
@@ -97,8 +97,8 @@ export const generateStoryCard = async (imageUrl: string, text: string) => {
   return canvas.toDataURL('image/png');
 };
 ```
-- [ ] **Step 2: Add Download & Native Share buttons**
-- [ ] **Step 3: Commit**
+- [x] **Step 2: Add Download & Native Share buttons**
+- [x] **Step 3: Commit**
 ```bash
 git add .
 git commit -m "feat: add story card generation and sharing"
@@ -110,9 +110,9 @@ git commit -m "feat: add story card generation and sharing"
 **Files:**
 - Create: `src/app/admin-gate/page.tsx`
 
-- [ ] **Step 1: Build feed of `is_approved = false` moments**
-- [ ] **Step 2: Add Toggle Approval/Reject buttons**
-- [ ] **Step 3: Commit**
+- [x] **Step 1: Build feed of `is_approved = false` moments**
+- [x] **Step 2: Add Toggle Approval/Reject buttons**
+- [x] **Step 3: Commit**
 ```bash
 git add .
 git commit -m "feat: add admin moderation dashboard"
@@ -124,9 +124,9 @@ git commit -m "feat: add admin moderation dashboard"
 **Files:**
 - Modify: `src/app/page.tsx`
 
-- [ ] **Step 1: Create conditional homepage view**
-- [ ] **Step 2: Build Masonry gallery for approved moments**
-- [ ] **Step 3: Commit**
+- [x] **Step 1: Create conditional homepage view**
+- [x] **Step 2: Build Masonry gallery for approved moments**
+- [x] **Step 3: Commit**
 ```bash
 git add .
 git commit -m "feat: add graduation wall gallery"

@@ -16,7 +16,7 @@
 - Modify: `src/app/layout.tsx`
 - Modify: `src/app/globals.css`
 
-- [ ] **Step 1: Add Playfair Display font to layout**
+- [x] **Step 1: Add Playfair Display font to layout**
 
 ```tsx
 // src/app/layout.tsx
@@ -30,7 +30,7 @@ const playfair = Playfair_Display({
 // ... update html className to include playfair.variable
 ```
 
-- [ ] **Step 2: Add animation keyframes to globals.css**
+- [x] **Step 2: Add animation keyframes to globals.css**
 
 ```css
 /* src/app/globals.css */
@@ -46,7 +46,7 @@ const playfair = Playfair_Display({
 }
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/app/layout.tsx src/app/globals.css
@@ -60,7 +60,7 @@ git commit -m "style: add Playfair Display font and fade animation keyframes"
 **Files:**
 - Create: `src/components/CinematicIntro.tsx`
 
-- [ ] **Step 1: Implement the component with step logic**
+- [x] **Step 1: Implement the component with step logic**
 
 ```tsx
 'use client';
@@ -113,7 +113,7 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/components/CinematicIntro.tsx
@@ -127,7 +127,7 @@ git commit -m "feat: implement CinematicIntro component with auto-advance logic"
 **Files:**
 - Modify: `src/app/page.tsx`
 
-- [ ] **Step 1: Add persistence and conditional rendering**
+- [x] **Step 1: Add persistence and conditional rendering**
 
 ```tsx
 // src/app/page.tsx
@@ -147,7 +147,7 @@ if (showIntro === null) return null; // Prevent flash
 if (showIntro) return <CinematicIntro onComplete={handleIntroComplete} />;
 ```
 
-- [ ] **Step 2: Add Replay Button to main UI**
+- [x] **Step 2: Add Replay Button to main UI**
 
 ```tsx
 // Inside Home component main return
@@ -156,7 +156,7 @@ if (showIntro) return <CinematicIntro onComplete={handleIntroComplete} />;
 </button>
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/app/page.tsx
@@ -167,7 +167,7 @@ git commit -m "feat: integrate cinematic intro with localStorage persistence"
 
 ### Task 4: Final Polishing & Verification
 
-- [ ] **Step 1: Verify on first visit** (Clear localStorage and refresh)
-- [ ] **Step 2: Verify skip-on-click works**
-- [ ] **Step 3: Verify replay button works**
-- [ ] **Step 4: Commit any final CSS tweaks**
+- [x] **Step 1: Verify on first visit** (Clear localStorage and refresh)
+- [x] **Step 2: Verify skip-on-click works**
+- [x] **Step 3: Verify replay button works**
+- [x] **Step 4: Commit any final CSS tweaks**
