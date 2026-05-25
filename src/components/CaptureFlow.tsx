@@ -34,7 +34,7 @@ export default function CaptureFlow() {
   const streamRef = useRef<MediaStream | null>(null);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const lastVolumeRef = useRef<number>(0.5);
+  const volumeShutterActivated = useRef(false);
   const [isVolumeShutterReady, setIsVolumeShutterReady] = useState(false);
 
   // Initialize camera stream reactively based on facingMode & retakeCount
@@ -305,7 +305,8 @@ export default function CaptureFlow() {
   useEffect(() => { capturePhotoRef.current = capturePhoto; }, [capturePhoto]);
 
   const activateVolumeShutter = useCallback(() => {
-    if (isVolumeShutterReady) return;
+    if (volumeShutterActivated.current) return;
+    volumeShutterActivated.current = true;
 
     const audio = new Audio();
     // Silent 1s WAV — no network request
@@ -313,18 +314,19 @@ export default function CaptureFlow() {
     audio.loop = true;
     audio.volume = 0.5;
 
-    let isResettingVolume = true; // The initial assignment to 0.5 will fire an event
+    // Time-based debounce prevents instant-capture on setup and infinite loops from programmatic volume resets
+    let lastCaptureTime = Date.now();
 
     audio.addEventListener('volumechange', () => {
-      // Ignore events caused by our own programmatic volume resets
-      if (isResettingVolume) {
-        isResettingVolume = false;
+      const now = Date.now();
+      // Ignore any volume events within 500ms of the last one
+      if (now - lastCaptureTime < 500) {
         return;
       }
+      lastCaptureTime = now;
 
-      // User pressed a physical volume button!
       // Reset volume immediately so buttons keep firing in both directions without hitting 0% or 100%
-      isResettingVolume = true;
+      // (Note: This is a no-op on iOS, but queued async on Android/Desktop which the 500ms debounce will safely ignore)
       audio.volume = 0.5;
       
       capturePhotoRef.current();
@@ -332,21 +334,21 @@ export default function CaptureFlow() {
 
     audio.play().then(() => {
       setIsVolumeShutterReady(true);
-      // Failsafe: if the initial volumechange never fired, unlock it
-      setTimeout(() => { isResettingVolume = false; }, 100);
     }).catch(() => {
       // Gesture wasn't sufficient — reset so next tap retries
+      volumeShutterActivated.current = false;
       setIsVolumeShutterReady(false);
     });
 
     audioRef.current = audio;
-  }, [isVolumeShutterReady]);
+  }, []);
 
   // Cleanup audio on unmount
   useEffect(() => {
     return () => {
       audioRef.current?.pause();
       audioRef.current = null;
+      volumeShutterActivated.current = false;
     };
   }, []);
 
