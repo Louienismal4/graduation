@@ -16,7 +16,7 @@
 **Files:**
 - Modify: `src/components/CinematicIntro.module.css`
 
-- [ ] **Step 1: Reduce translation and rotation in drift keyframes**
+- [x] **Step 1: Reduce translation and rotation in drift keyframes**
 
 ```css
 @keyframes drift {
@@ -27,7 +27,7 @@
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/components/CinematicIntro.module.css

@@ -19,7 +19,7 @@
 **Files:**
 - Modify: `src/components/CinematicIntro.module.css`
 
-- [ ] **Step 1: Update wordBlurIn and add drift keyframes**
+- [x] **Step 1: Update wordBlurIn and add drift keyframes**
 
 ```css
 @keyframes wordBlurIn {
@@ -60,7 +60,7 @@
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/components/CinematicIntro.module.css
@@ -74,7 +74,7 @@ git commit -m "feat: update CSS for slower reveal and organic drift"
 **Files:**
 - Modify: `src/components/CinematicIntro.tsx`
 
-- [ ] **Step 1: Update renderContent to use nested drifter spans with randomized styles**
+- [x] **Step 1: Update renderContent to use nested drifter spans with randomized styles**
 
 ```typescript
 // ... inside renderContent ...
@@ -115,7 +115,7 @@ if (currentStep < FINAL_TITLE_STEP) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/components/CinematicIntro.tsx
@@ -129,7 +129,7 @@ git commit -m "feat: implement nested drift spans and randomized word rhythms"
 **Files:**
 - Modify: `src/components/CinematicIntro.tsx`
 
-- [ ] **Step 1: Update the useEffect timer calculation**
+- [x] **Step 1: Update the useEffect timer calculation**
 
 ```typescript
 // ... inside useEffect ...
@@ -141,7 +141,7 @@ if (currentStep < FINAL_TITLE_STEP) {
 }
 ```
 
-- [ ] **Step 2: Commit and verify**
+- [x] **Step 2: Commit and verify**
 
 ```bash
 git add src/components/CinematicIntro.tsx

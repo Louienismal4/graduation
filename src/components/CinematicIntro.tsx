@@ -23,9 +23,42 @@ export default function CinematicIntro({
   onComplete: () => void;
 }) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
 
+  const EXIT_DURATION = 1500; // Match CSS transition duration
+
+  const advanceStep = () => {
+    if (currentStep >= FINAL_CTA_STEP) return;
+
+    if (currentStep < FINAL_TITLE_STEP) {
+      if (isExiting) {
+        // If already exiting, immediately advance to bypass transition delay
+        setIsExiting(false);
+        setCurrentStep((prev) => prev + 1);
+      } else {
+        // Start the exit/blur out transition
+        setIsExiting(true);
+      }
+    } else {
+      // For final title and CTA, advance immediately without extra blur transition
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
+  // Effect to handle exit transition timeout
   useEffect(() => {
-    if (currentStep < FINAL_CTA_STEP) {
+    if (isExiting) {
+      const timer = setTimeout(() => {
+        setIsExiting(false);
+        setCurrentStep((prev) => prev + 1);
+      }, EXIT_DURATION);
+      return () => clearTimeout(timer);
+    }
+  }, [isExiting]);
+
+  // Effect for automatic slide progression
+  useEffect(() => {
+    if (currentStep < FINAL_CTA_STEP && !isExiting) {
       let duration = 6500;
 
       if (currentStep < FINAL_TITLE_STEP) {
@@ -38,11 +71,15 @@ export default function CinematicIntro({
       }
 
       const timer = setTimeout(() => {
-        setCurrentStep((prev) => prev + 1);
+        if (currentStep < FINAL_TITLE_STEP) {
+          setIsExiting(true);
+        } else {
+          setCurrentStep((prev) => prev + 1);
+        }
       }, duration);
       return () => clearTimeout(timer);
     }
-  }, [currentStep]);
+  }, [currentStep, isExiting]);
 
   // Styles based on spec: White background, #1E2D93 text color, Playfair Display font
   const containerStyle: React.CSSProperties = {
@@ -86,7 +123,7 @@ export default function CinematicIntro({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if ((e.key === "Enter" || e.key === " ") && currentStep < FINAL_CTA_STEP) {
-      setCurrentStep((prev) => prev + 1);
+      advanceStep();
     }
   };
 
@@ -94,7 +131,13 @@ export default function CinematicIntro({
     if (currentStep < FINAL_TITLE_STEP) {
       const words = calculateWordDelays(steps[currentStep]);
       return (
-        <div key={currentStep} style={textStyle}>
+        <div
+          key={currentStep}
+          style={textStyle}
+          className={`${styles.sentenceContainer} ${
+            isExiting ? styles.sentenceExiting : ""
+          }`}
+        >
           {words.map((word, i) => {
             const randomDuration = 4 + (i % 3);
             const randomDelay = -(i % 5);
@@ -177,9 +220,7 @@ export default function CinematicIntro({
 
   return (
     <div
-      onClick={() =>
-        currentStep < FINAL_CTA_STEP && setCurrentStep((prev) => prev + 1)
-      }
+      onClick={advanceStep}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"

@@ -34,3 +34,19 @@
   display: block;
   height: 0;
 }
+
+.sentenceContainer {
+  transition: opacity 3s cubic-bezier(0.25, 1, 0.3, 1),
+              filter 3s cubic-bezier(0.25, 1, 0.3, 1),
+              transform 3s cubic-bezier(0.25, 1, 0.3, 1);
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1) translateY(0);
+}
+
+.sentenceExiting {
+  opacity: 0;
+  filter: blur(16px);
+  transform: scale(1.02) translateY(-12px);
+}
+
